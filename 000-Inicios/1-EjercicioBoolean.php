@@ -1,8 +1,9 @@
 <?php
-$record= array();
-$intentosLimite=10;
-$min=1;
-$max=1000;
+    $record= array();
+    $intentosLimite=5;
+    $min=1;
+    $max=100;
+    $todosIntentos="";
 if(isset($_POST['numero'])) {
 
     $number = $_POST['numero'];
@@ -33,16 +34,18 @@ if(isset($_POST['numero'])) {
     <h1>Has superado el limite de intentos permitidos</h1>
 
         <?php
-        /* Sistema de Podio pendiene(ERROR El array llega vacio!!!!!)
+        /* Sistema de Podio pendiene(ERROR El array llega vacio!!!!!)*/
+            $record=explode(",",$todosIntentos);
             $record.sort();
             for ($i=0;$i=2;$i++){
                 echo "<p>Top($i+1): $record[i]</br></p>";
             }
-        */
+
         ?>
         <form action="" method="post" name="numeroNuevo">
             <input name="restart" type="submit" value="Nueva Partida" />
             <input name="intentos" type="hidden" value="<?= $intentos ?>" />
+            <input name="todosIntentos" type="hidden" value="<?= $todosIntentos ?>" />
 
         </form>
 <?php
@@ -53,12 +56,14 @@ if(isset($_POST['numero'])) {
     <input type="text" id="adivinar" name="adivinar"/>
     <input name="numero" type="hidden" value="<?= $number ?>" />
     <input name="intentos" type="hidden" value="<?= $intentos ?>" />
+    <input name="todosIntentos" type="hidden" value="<?= $todosIntentos ?>" />
     <input name="submit" type="submit" value="¡Prueba suerte!" />
 </form>
 
 <form action="" method="post" name="numeroNuevo">
     <input name="restart" type="submit" value="Nueva Partida" />
     <input name="intentos" type="hidden" value="<?= $intentos ?>" />
+    <input name="todosIntentos" type="hidden" value="<?= $todosIntentos ?>" />
 
 </form>
 
@@ -79,7 +84,7 @@ if($_POST["adivinar"]){
         echo "</br>Has introducido $adivinar </br>";
         echo "Intenta con un número más bajo.";
     }elseif($adivinar == $number){ //Si se ha introducido numero igual
-       // array_push($record,$intentos); Registrar los intentos
+        $todosIntentos=$todosIntentos.",".$intentos;
         echo "<p>¡Excelente! Lo adivinaste</p>";
         echo "<p> </br> Has hecho :",$intentos," intentos</p>";
         $puntuacion=round($max/$intentos);
@@ -93,3 +98,4 @@ if($_POST["adivinar"]){
 ?>
 </body>
 </html>
+

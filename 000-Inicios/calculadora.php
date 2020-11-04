@@ -69,5 +69,3 @@ switch ($operacin) {
 ?>
 
 </body>
-
-</html>
