@@ -14,8 +14,9 @@ $idPersona = (int)$_REQUEST["id"];
 $nueva_persona = ($idPersona == -1);
 
 if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan datos.
-
+    $estrella="";
     $persona_nombre = "<introduzca nombre>";// Crear una nueva PERSONA
+    $persona_apellidos= "<Introduzca apellidos>";
     $persona_tele = "<intrduzca telefon>";// Telefono de la persona
     $idCategoriaSelected = "<id de categoria>";// Categoria a la que pertence
 
@@ -27,21 +28,18 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
     $rs_persona = $select->fetchAll();
 
     // Con esto, accedemos a los datos de la primera (y esperemos que única) fila que haya venido.
+    $estrella= $rs_persona[0]["estrella"];
+    $persona_apellidos= $rs_persona[0]["apellidos"];
     $persona_nombre = $rs_persona[0]["nombre"];
     $persona_tele = $rs_persona[0]["telefono"];
-    $idCategoriaSelected = $rs_persona[0]["categoria_id"];
+    $idCategoriaSelected = $rs_persona[0]["categoriaId"];
 
-    /*------------QUEDA PENDIENTE HACER EL SELECT CON EL NOMBRE CATEGORIA SELECCIOANDO----------*/
-
-    $sqlCategoria= "SELECT id,nombre FROM categoria";
-    $selectCategoria = $pdo->prepare($sqlCategoria);/*Preparar la consulta con el string SQL anterior*/
-    $selectCategoria->execute([]); // Se añade el parámetro recogido de la REQUEST a la consulta preparada.
-    $rsCategoria = $selectCategoria->fetchAll();
-
-    // Con esto, accedemos a los datos de la primera (y esperemos que única) fila que haya venido.
-    //$idCategoria= $rs_categoria["id"];
-    //$nombreCategoria= $rs_categoria["nombre"];
 }
+$sqlCategoria= "SELECT id,nombre FROM categoria";
+$selectCategoria = $pdo->prepare($sqlCategoria);/*Preparar la consulta con el string SQL anterior*/
+$selectCategoria->execute([]); // Se añade el parámetro recogido de la REQUEST a la consulta preparada.
+$rsCategoria = $selectCategoria->fetchAll();
+
 ?>
 
 
@@ -66,11 +64,23 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
 <form method="post" action="persona-guardar.php">
 
     <input type="hidden" name="id" value="<?=$idPersona?>" />
+    <ul>
+        <li>
+            <strong>Estrella: </strong>
+            Marca si tiene estrella    <input type="radio" name="gender" value="1">
 
+        </li>
+    </ul>
     <ul>
         <li>
             <strong>Nombre: </strong>
             <input type="text" name="nombre" value="<?=$persona_nombre?>" />
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <strong>Apellidos: </strong>
+            <input type="text" name="apellido" value="<?=$persona_apellidos?>" />
         </li>
     </ul>
     <ul>

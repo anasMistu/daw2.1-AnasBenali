@@ -7,7 +7,15 @@ $pdo = obtenerPdoConexionBD();
 $idPersona = (int)$_REQUEST["id"];
 $nombre_persona = $_REQUEST["nombre"];
 $persona_tele=$_REQUEST["telefono"];
-$idCategoria=$_REQUEST["categoria_id"];
+$persona_apellido= $_REQUEST["apellido"];
+$estrella=(int)$_REQUEST["gender"];
+$idCategoria=$_REQUEST["rsCategoria"];
+
+if($estrella==1){
+    $estrella=1;
+}else{
+    $estrella=0;
+}
 // Si id es -1 quieren CREAR una nueva entrada ($nueva_entrada tomará true).
 // Sin embargo, si id NO es -1 quieren VER la ficha de una categoría existente
 // (y $nueva_entrada tomará false).
@@ -15,12 +23,12 @@ $nueva_entrada = ($idPersona == -1);
 
 if ($nueva_entrada) {
     // Quieren CREAR una nueva entrada, así que es un INSERT.
-    $sql = "INSERT INTO persona (nombre,telefono,categoria_id) VALUES (?,?,?)";
-    $parametros = [$nombre_persona,$persona_tele,$idCategoria];
+    $sql = "INSERT INTO persona (nombre,apellidos,telefono,estrella,categoriaId) VALUES (?,?,?,?,?)";
+    $parametros = [$nombre_persona,$persona_apellido,$persona_tele,$estrella,$idCategoria];
 } else {
     // Quieren MODIFICAR una categoría existente y es un UPDATE.
-    $sql = "UPDATE persona SET nombre=?,telefono=?, categoria_id=? WHERE id=?";
-    $parametros = [$nombre_persona,$persona_tele,$idCategoria,$idPersona];
+    $sql = "UPDATE persona SET nombre=?,apellidos=?,telefono=?, estrella=?,categoriaId=? WHERE id=?";
+    $parametros = [$nombre_persona,$persona_apellido,$persona_tele,$estrella,$idCategoria,$idPersona];
 }
 
 $sentencia = $pdo->prepare($sql);

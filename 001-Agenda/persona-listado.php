@@ -2,20 +2,23 @@
     require_once "_varios.php";
 
     $pdo = obtenerPdoConexionBD();
-
     $sql = "SELECT
                 p.id     AS p_id,
                 p.nombre AS p_nombre,
+                p.apellidos AS p_apellidos,
+                p.estrella AS p_estrella,
                 c.id     AS c_id,
                 c.nombre AS c_nombre
             FROM
                persona AS p INNER JOIN categoria AS c
-               ON p.categoria_id = c.id
+               ON p.categoriaId = c.id
             ORDER BY p.nombre";
 
     $select = $pdo->prepare($sql);
     $select->execute([]); // Array vacío porque la consulta preparada no requiere parámetros.
     $rs = $select->fetchAll();
+    ///PENDIENTE BUTTON LISTADO DE ESTRELLAS SOLO
+    if(isset($_REQUEST[""]));
 
 ?>
 
@@ -34,7 +37,9 @@
 <table border="1">
 
     <tr>
+        <th>Estrella</th>
         <th>Nombre</th>
+        <th>Apellidos</th>
         <th>Categoria</th>
         <th>Eliminar</th>
 
@@ -43,7 +48,17 @@
     <?php
     foreach ($rs as $fila) { ?>
         <tr>
+            <?php
+            $estrellita=(int)$fila["p_estrella"];
+            if($estrellita==0){
+                $estrellitaInput=" ";
+            }else{
+                $estrellitaInput="*";
+            }
+            ?>
+            <td><a href="persona-ficha.php?id=<?=$fila["p_id"]?>"> <?=$estrellitaInput ?> </a></td>
             <td><a href="persona-ficha.php?id=<?=$fila["p_id"]?>"> <?=$fila["p_nombre"] ?> </a></td>
+            <td><a href="persona-ficha.php?id=<?=$fila["p_id"]?>"> <?=$fila["p_apellidos"] ?> </a></td>
             <td><a href="persona-ficha.php?id=<?=$fila["c_id"]?>"> <?=$fila["c_nombre"] ?> </a></td>
             <td><a href="persona-eliminar.php?id=<?=$fila["p_id"]?>"> (X)                   </a></td>
 
@@ -63,6 +78,8 @@
 <br />
 
 <a href="persona-listado.php">Gestionar listado de Personas</a>
+<br />
+<br />
 
 </body>
 
