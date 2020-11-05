@@ -5,9 +5,9 @@ $pdo = obtenerPdoConexionBD();
 
 // Se recoge el parámetro "id" de la request.
 $idPersona = (int)$_REQUEST["id"];
-$persona_nombre=$_REQUEST["nombre"];
-$persona_tele=$_REQUEST["telefono"];
-$idCategoriaSelected=$_REQUEST["categoria_id"];
+//$persona_nombre=$_REQUEST["nombre"];
+//$persona_tele=$_REQUEST["telefono"];
+//$idCategoriaSelected=$_REQUEST["categoria_id"];
 // Si id es -1 quieren CREAR una nueva categoria (nueva categoria toamara valor true).
 // Sin embargo, si id NO es -1 quieren VER la ficha de una categoría existente
 // (nueva categoria tomara el valor de FALSE ).
@@ -32,13 +32,15 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
     $idCategoriaSelected = $rs_persona[0]["categoria_id"];
 
     /*------------QUEDA PENDIENTE HACER EL SELECT CON EL NOMBRE CATEGORIA SELECCIOANDO----------*/
-   // $sqlCategoria= "SELECT * FROM categoria";
-    //$selectCategoria = $pdo->prepare($sql);/*Preparar la consulta con el string SQL anterior*/
-    //$selectCategoria->execute([]); // Se añade el parámetro recogido de la REQUEST a la consulta preparada.
-    //$rs_categoria = $select->fetchAll();
+
+    $sqlCategoria= "SELECT id,nombre FROM categoria";
+    $selectCategoria = $pdo->prepare($sqlCategoria);/*Preparar la consulta con el string SQL anterior*/
+    $selectCategoria->execute([]); // Se añade el parámetro recogido de la REQUEST a la consulta preparada.
+    $rsCategoria = $selectCategoria->fetchAll();
 
     // Con esto, accedemos a los datos de la primera (y esperemos que única) fila que haya venido.
-
+    //$idCategoria= $rs_categoria["id"];
+    //$nombreCategoria= $rs_categoria["nombre"];
 }
 ?>
 
@@ -48,6 +50,7 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 </head>
 
 
@@ -78,8 +81,22 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
     </ul>
     <ul>
         <li>
-            <strong>Id Categoria: </strong>
-            <input type="text" name="categoria_id" value="<?=$idCategoriaSelected?>" />
+            <strong>Categoria: </strong>
+            <select name="rsCategoria">
+                <?php
+                foreach ($rsCategoria as $filaCategoria){
+                    $idCategoria= $filaCategoria["id"];
+                    $nombreCategoria= $filaCategoria["nombre"];
+                        if($idCategoria == $idCategoriaSelected){
+                            $seleccoinado="selected='true'";
+                        }else{
+                            $seleccoinado="";
+                        }
+                        echo "<option value='$idCategoria' $seleccoinado>$nombreCategoria</option>";
+
+                }
+                ?>
+            </select>
         </li>
     </ul>
 
@@ -98,7 +115,7 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
 <br />
 <br />
 
-<a href="persona-listado.php">Volver al listado de personas.</a>
+<a href="persona-listado.php" >Volver al listado de personas.</a>
 
 </body>
 
