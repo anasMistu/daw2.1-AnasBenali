@@ -8,14 +8,16 @@ $idPersona = (int)$_REQUEST["id"];
 $nombre_persona = $_REQUEST["nombre"];
 $persona_tele=$_REQUEST["telefono"];
 $persona_apellido= $_REQUEST["apellido"];
-$estrella=(int)$_REQUEST["gender"];
+$estrella=(int)$_REQUEST["estrella"];
 $idCategoria=$_REQUEST["rsCategoria"];
+/* Para guardarlo en la base de datos Si viene 1 (chekbox chekeado) le doy valor 1 si no esta chekeado le doy valor 0*/
 
 if($estrella==1){
     $estrella=1;
 }else{
     $estrella=0;
 }
+
 // Si id es -1 quieren CREAR una nueva entrada ($nueva_entrada tomará true).
 // Sin embargo, si id NO es -1 quieren VER la ficha de una categoría existente
 // (y $nueva_entrada tomará false).

@@ -1,8 +1,8 @@
 <?php
-    require_once "_varios.php";
+require_once "_varios.php";
 
-    $pdo = obtenerPdoConexionBD();
-    $sql = "SELECT
+$pdo = obtenerPdoConexionBD();
+$sql = "SELECT
                 p.id     AS p_id,
                 p.nombre AS p_nombre,
                 p.apellidos AS p_apellidos,
@@ -12,13 +12,14 @@
             FROM
                persona AS p INNER JOIN categoria AS c
                ON p.categoriaId = c.id
+            WHERE p.estrella=1
             ORDER BY p.nombre";
 
-    $select = $pdo->prepare($sql);
-    $select->execute([]); // Array vacío porque la consulta preparada no requiere parámetros.
-    $rs = $select->fetchAll();
-    ///PENDIENTE BUTTON LISTADO DE ESTRELLAS SOLO
-    if(isset($_REQUEST[""]));
+$select = $pdo->prepare($sql);
+$select->execute([]); // Array vacío porque la consulta preparada no requiere parámetros.
+$rs = $select->fetchAll();
+///PENDIENTE BUTTON LISTADO DE ESTRELLAS SOLO
+if(isset($_REQUEST[""]));
 
 ?>
 
@@ -77,11 +78,10 @@
 <br />
 <br />
 
-<a href="persona-favoritos.php">Ver favoritos</a>
+<a href="persona-listado.php">Ver todos</a>
 <br />
 <br />
 
 </body>
 
 </html>
-

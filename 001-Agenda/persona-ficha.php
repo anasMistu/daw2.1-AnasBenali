@@ -5,6 +5,8 @@ $pdo = obtenerPdoConexionBD();
 
 // Se recoge el parámetro "id" de la request.
 $idPersona = (int)$_REQUEST["id"];
+$estrella = (int)$_REQUEST["estrella"];
+
 //$persona_nombre=$_REQUEST["nombre"];
 //$persona_tele=$_REQUEST["telefono"];
 //$idCategoriaSelected=$_REQUEST["categoria_id"];
@@ -32,7 +34,7 @@ if ($nueva_persona) { // Quieren CREAR una nueva entrada, así que no se cargan 
     $persona_apellidos= $rs_persona[0]["apellidos"];
     $persona_nombre = $rs_persona[0]["nombre"];
     $persona_tele = $rs_persona[0]["telefono"];
-    $idCategoriaSelected = $rs_persona[0]["categoriaId"];
+    $idCategoriaSelected = $rs_persona[0]["categoria_id"];
 
 }
 $sqlCategoria= "SELECT id,nombre FROM categoria";
@@ -67,7 +69,13 @@ $rsCategoria = $selectCategoria->fetchAll();
     <ul>
         <li>
             <strong>Estrella: </strong>
-            Marca si tiene estrella    <input type="radio" name="gender" value="1">
+            <?php if($estrella==1){
+                $chekreado="checked";
+            }else{
+                $chekreado="";
+            }
+            ?>
+            Marca si tiene estrella    <input type="checkbox" name="estrella" value="1" <?=$chekreado?>>
 
         </li>
     </ul>
