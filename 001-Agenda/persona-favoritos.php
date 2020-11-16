@@ -52,16 +52,16 @@ if(isset($_REQUEST[""]));
             <?php
             $estrellita=(int)$fila["p_estrella"];
             if($estrellita==0){
-                $estrellitaInput=" ";
+                $estrellitaInput='<img src="estrellaVacia.png" alt="Estrella vacia" width="25" height="25">';
             }else{
-                $estrellitaInput="*";
+                $estrellitaInput='<img src="estrella.png" alt="Estrella rellena" width="25" height="25">';
             }
             ?>
             <td><a href="persona-ficha.php?id=<?=$fila["p_id"]?>"> <?=$estrellitaInput ?> </a></td>
             <td><a href="persona-ficha.php?id=<?=$fila["p_id"]?>"> <?=$fila["p_nombre"] ?> </a></td>
             <td><a href="persona-ficha.php?id=<?=$fila["p_id"]?>"> <?=$fila["p_apellidos"] ?> </a></td>
             <td><a href="persona-ficha.php?id=<?=$fila["c_id"]?>"> <?=$fila["c_nombre"] ?> </a></td>
-            <td><a href="persona-eliminar.php?id=<?=$fila["p_id"]?>"> (X)                   </a></td>
+            <td><a href="persona-eliminar.php?id=<?=$fila["p_id"]?>"> <img src="papelera.png" alt="papelera" width="25" height="25"> </a></td>
 
         </tr>
     <?php } ?>
