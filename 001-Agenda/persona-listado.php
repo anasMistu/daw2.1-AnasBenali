@@ -2,6 +2,18 @@
     require_once "_varios.php";
 
     $pdo = obtenerPdoConexionBD();
+    $mostrarSoloEstrellas = isset($_REQUEST["soloEstrellas"]);
+    $ordenarPor="p.nombre";
+    if(isset($_REQUEST["ordenSeleccionado"])){
+        $ordenarPor=$_REQUEST["orden"];
+    }
+
+    $ordenarDe="ASC";
+    if(isset($_REQUEST["masMenoss"])){
+        $ordenarDe=$_REQUEST["masMenos"];
+    }
+
+    $posibleClausulaWhere = $mostrarSoloEstrellas ? "WHERE p.estrella=1" : "";
     $sql = "SELECT
                 p.id     AS p_id,
                 p.nombre AS p_nombre,
@@ -12,7 +24,8 @@
             FROM
                persona AS p INNER JOIN categoria AS c
                ON p.categoriaId = c.id
-            ORDER BY p.nombre";
+            $posibleClausulaWhere
+            ORDER BY $ordenarPor $ordenarDe ";
 
     $select = $pdo->prepare($sql);
     $select->execute([]); // Array vacío porque la consulta preparada no requiere parámetros.
@@ -71,13 +84,31 @@
 </table>
 
 <br />
-
+<form method="get" action="persona-listado.php">
+    <label for="orden1">Ordenar Por:</label>
+    <select name="orden" >
+        <option value="p.apellidos">Apellidos</option>
+        <option value="p.nombre">nombre</option>
+        <option value="c.nombre">categoria</option>
+    </select>
+    <input type="submit" name="ordenSeleccionado" value="Ordenar">
+    <select name="masMenos" >
+        <option value=" ASC">Ascendente</option>
+        <option value=" DESC">Descendente</option>
+    </select>
+    <input type="submit" name="masMenoss" value="Ordenar">
+</form>
+<?php if (!$mostrarSoloEstrellas) {?>
+    <a href='persona-listado.php?soloEstrellas'>Ver favoritos</a>
+<?php } else { ?>
+    <a href='persona-listado.php'>Mostrar todos los contactos</a>
+<?php } ?>
 <a href="persona-ficha.php?id=-1">Crear entrada</a>
 
 <br />
 <br />
 
-<a href="persona-favoritos.php">Ver favoritos</a>
+
 <br />
 <br />
 
