@@ -1,6 +1,7 @@
 <?php
-    require_once "_varios.php";
+session_start();
 
+    require_once "_varios.php";
     $pdo = obtenerPdoConexionBD();
     $mostrarSoloEstrellas = isset($_REQUEST["soloEstrellas"]);
     $ordenarPor="p.nombre";
@@ -30,8 +31,6 @@
     $select = $pdo->prepare($sql);
     $select->execute([]); // Array vacío porque la consulta preparada no requiere parámetros.
     $rs = $select->fetchAll();
-    ///PENDIENTE BUTTON LISTADO DE ESTRELLAS SOLO
-    if(isset($_REQUEST[""]));
 
 ?>
 
@@ -39,11 +38,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css.css">
+
 </head>
 
 
 
-<body>
+<body class="<?=$_SESSION['tema']?>">
 
 <h1>Listado de Persona</h1>
 
@@ -87,14 +88,14 @@
 <form method="get" action="persona-listado.php">
     <label for="orden1">Ordenar Por:</label>
     <select name="orden" >
-        <option value="p.apellidos">Apellidos</option>
+        <option value="p.apellidos" >Apellidos</option>
         <option value="p.nombre">nombre</option>
         <option value="c.nombre">categoria</option>
     </select>
     <input type="submit" name="ordenSeleccionado" value="Ordenar">
     <select name="masMenos" >
-        <option value=" ASC">Ascendente</option>
-        <option value=" DESC">Descendente</option>
+        <option value=" ASC" >Ascendente</option>
+        <option value=" DESC" >Descendente</option>
     </select>
     <input type="submit" name="masMenoss" value="Ordenar">
 </form>
@@ -111,6 +112,7 @@
 
 <br />
 <br />
+<p >Cambiar tema : <a class="n" href='establecerTema.php?tema=negro'>Negro</a><a href='establecerTema.php?tema=rojo'>Rojo</a><a href='establecerTema.php?tema=azul'>Azul</a>
 
 </body>
 

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once "_varios.php";
 
 $pdo = obtenerPdoConexionBD();
@@ -27,11 +29,13 @@ if(isset($_REQUEST[""]));
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css.css">
+
 </head>
 
 
 
-<body>
+<body class="<?=$_SESSION['tema']?>">
 
 <h1>Listado de Persona</h1>
 
