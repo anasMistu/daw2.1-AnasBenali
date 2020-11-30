@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once "_varios.php";
 
 $pdo = obtenerPdoConexionBD();
@@ -29,11 +31,14 @@ $no_existia = ($sql_con_exito && $ninguna_fila_afectada);
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css.css">
+
+
 </head>
 
 
 
-<body>
+<body class="<?=$_SESSION['tema']?>">
 
 <?php if ($correcto) { ?>
 

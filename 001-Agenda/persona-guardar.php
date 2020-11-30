@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once "_varios.php";
 
 $pdo = obtenerPdoConexionBD();
@@ -54,11 +56,13 @@ $datos_no_modificados = ($sql_con_exito && $ninguna_fila_afectada);
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css.css">
+
 </head>
 
 
 
-<body>
+<body class="<?=$_SESSION['tema']?>">
 
 <?php
 // Todo bien tanto si se han guardado los datos nuevos como si no se habían modificado.
