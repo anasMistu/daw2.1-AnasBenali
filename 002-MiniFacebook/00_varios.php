@@ -32,24 +32,28 @@ function obtenerUsuario(string $identificador, string $contrasenna): ?array
     $select= $pdo->prepare($sql);
     $select->execute([$identificador,$contrasenna]);
     $resultados=$select->fetchAll();
-    return $resultados;
+    $id=$resultados["id"];
+    $nombre=$resultados["nombre"];
+    $apellidos=$resultados["apellidos"];
+    return [id=>$id,identificador=>$identificador,nombre=>$nombre,apellidos=>$apellidos];
 }
 
 function marcarSesionComoIniciada(int $id, string $identificador, string $nombre, string $apellidos)
 {
-    $_SESSION["id"] = "$id";
-    $_SESSION["identoficador"] = "$identificador";
-    $_SESSION["nombre"] = "$nombre";
-    $_SESSION["apellidos"] = "$apellidos";
+    session_start();
+    $_SESSION["id"]=$id;
+    $_SESSION["identificador"]=$identificador;
+    $_SESSION["nombre"] =$nombre;
+    $_SESSION["apellidos"]=$apellidos;
+    redireccionar("02ContenidoPrivado1.php");
 }
 
-function haySesionIniciada(): boolean
-{
-if(isset($_SESSION["id"]) && isset($_SESSION["identoficador"]) && isset($_SESSION["nombre"]) && isset($_SESSION["apellidos"])){
-    return true;
-}else{
-    return false;
-}
+function haySesionIniciada(): bool{
+        if(isset($_SESSION["id"])){
+             return TRUE;
+        }else{
+            return FALSE;
+        }
 }
 
 function cerrarSesion()
