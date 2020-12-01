@@ -27,15 +27,15 @@ function obtenerPdoConexionBD(): PDO
 function obtenerUsuario(string $identificador, string $contrasenna): ?array
 {
     $pdo = obtenerPdoConexionBD();
-
-    $sql ="SELECT * FROM Usuario WHERE identificador=? AND contrasenna=?";
+    $sql="SELECT * FROM Usuario WHERE identificador='$identificador' AND contrasenna='$contrasenna'";
     $select= $pdo->prepare($sql);
-    $select->execute([$identificador,$contrasenna]);
-    $resultados=$select->fetchAll();
-    $id=$resultados["id"];
-    $nombre=$resultados["nombre"];
-    $apellidos=$resultados["apellidos"];
-    return [id=>$id,identificador=>$identificador,nombre=>$nombre,apellidos=>$apellidos];
+    $select->execute([]);
+    $resultados= $select->fetchAll();
+    $id=$resultados[0]['id'];
+    $nombre=$resultados[0]['nombre'];
+    $apellidos=$resultados[0]['apellidos'];
+    $identificadorr=$resultados[0]['identificador'];
+    return $resultados;
 }
 
 function marcarSesionComoIniciada(int $id, string $identificador, string $nombre, string $apellidos)
