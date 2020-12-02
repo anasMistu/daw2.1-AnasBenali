@@ -5,7 +5,6 @@ require_once "00_varios.php";
 if (haySesionIniciada()) {
     redireccionar("02ContenidoPrivado1.php");
 }
-
 ?>
 
 
@@ -22,8 +21,15 @@ if (haySesionIniciada()) {
 <body>
 
 <h1>Iniciar Sesión</h1>
+<?php
+if(isset($_SESSION["txt"])){
+?>
+<p><?= $_SESSION["txt"]?></p>
+<?php
+}
+?>
 <div class="formulario">
-    <form action="01SesionInicioComprobar.php">
+    <form method="post" action="01SesionInicioComprobar.php">
         <input type="text" name="identificador" placeholder="Introduce tu usuario"><br><br>
         <input type="password" name="contrasenna" placeholder="Introduce tu contraseña" ><br><br>
         <input type="submit" name="Iniciar Session" value="Iniciar Session">

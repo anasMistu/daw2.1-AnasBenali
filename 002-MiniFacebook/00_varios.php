@@ -31,10 +31,12 @@ function obtenerUsuario(string $identificador, string $contrasenna): ?array
     $select= $pdo->prepare($sql);
     $select->execute([]);
     $resultados= $select->fetchAll();
+    /* No he consiguido que funcione de esta manera
     $id=$resultados[0]['id'];
     $nombre=$resultados[0]['nombre'];
     $apellidos=$resultados[0]['apellidos'];
     $identificadorr=$resultados[0]['identificador'];
+    */
     return $resultados;
 }
 
