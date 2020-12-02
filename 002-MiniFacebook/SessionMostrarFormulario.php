@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once "00_varios.php";
+require_once "_varios.php";
 /*Si no hay session iniciada redirigimos a la pagina de CONTENIDO PRIADO 1*/
 if (haySesionIniciada()) {
-    redireccionar("02ContenidoPrivado1.php");
+    redireccionar("ContenidoPrivado1.php");
 }
 ?>
 
@@ -29,7 +29,7 @@ if(isset($_SESSION["txt"])){
 }
 ?>
 <div class="formulario">
-    <form method="post" action="01SesionInicioComprobar.php">
+    <form method="post" action="SesionInicioComprobar.php">
         <input type="text" name="identificador" placeholder="Introduce tu usuario"><br><br>
         <input type="password" name="contrasenna" placeholder="Introduce tu contraseña" ><br><br>
         <input type="submit" name="Iniciar Session" value="Iniciar Session">

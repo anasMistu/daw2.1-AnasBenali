@@ -23,7 +23,7 @@ session_start();
 
 <h1>Contenido Público 1</h1>
 <?php if($mostrarLink==true){ ?>
-<nav><a href="01SessionMostrarFormulario.php">Iniciar Session</a></nav>
+<nav><a href="SessionMostrarFormulario.php">Iniciar Session</a></nav>
 <?php }else{?>
 <nav>Usuario: <?=$_SESSION["identificador"]?>  Nombre: <?=$_SESSION["nombre"]?>  Apellidos: <?=$_SESSION["apellidos"]?></nav>
 <?php };?>
@@ -31,9 +31,9 @@ session_start();
 <p>Proin vitae dignissim libero, a pulvinar arcu. Pellentesque rhoncus fringilla orci, vitae fermentum felis maximus at. Vestibulum fermentum eu risus vel volutpat. Donec eget feugiat lectus. Praesent mauris est, eleifend a lacinia maximus, varius sed libero. Etiam pretium est id volutpat molestie. Maecenas semper ante at diam porttitor ullamcorper. Phasellus nec mollis ex. Donec posuere risus enim, feugiat tempus justo vehicula eu. Proin feugiat placerat luctus. Aliquam hendrerit, massa ut venenatis lacinia, lectus metus scelerisque elit, sit amet eleifend est augue id lectus. Maecenas rhoncus suscipit ligula et facilisis. Mauris et imperdiet magna, ultricies semper magna. Vestibulum porttitor sed arcu ac ornare.</p>
 <p>Sed dapibus arcu finibus, maximus justo eget, vestibulum turpis. Ut ut nibh egestas metus pretium pretium. Nulla efficitur vel mi quis rutrum. Nunc a condimentum nisl. Etiam venenatis efficitur dictum. Quisque a velit in mauris congue scelerisque a aliquet massa. Integer ultrices molestie nulla non dictum.</p>
 
-<a href='02ContenidoPrivado1.php'>Ir al Contenido Privado 1</a>
+<a href='ContenidoPrivado1.php'>Ir al Contenido Privado 1</a>
 
-<a href='02ContenidoPrivado2.php'>Ir al Contenido Privado 2</a>
+<a href='ContenidoPrivado2.php'>Ir al Contenido Privado 2</a>
 
 </body>
 

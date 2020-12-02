@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "00_varios.php";
+require_once "_varios.php";
 $pdo=obtenerPdoConexionBD();
 /*Si no hay session iniciada redirigimos a la pagina de Iniciar Session*/
     $id="";
@@ -9,10 +9,10 @@ $pdo=obtenerPdoConexionBD();
     $identificador=(string)$_REQUEST["identificador"];
     $contrasenna=(string)$_REQUEST["contrasenna"];
     /* Consultar que el usuario y contrasenna estan en la BDD */
-    $resultados= obtenerUsuario($identificador,$contrasenna);
+    $resultados= obtenerUsuario($identificador);
     /* SI hay un solo resultado---> Inicio session correcto */
 
-    if(count($resultados)==1 && !empty($resultados)){
+    if(count($resultados)==1 && password_verify("$contrasenna",$resultados[0]["contrasenna"])){
         $id=(int)$resultados[0]["id"];
         $identificador=(string)$resultados[0]["identificador"];
         $nombre=(string)$resultados[0]["nombre"];
@@ -20,7 +20,7 @@ $pdo=obtenerPdoConexionBD();
         marcarSesionComoIniciada($id,$identificador,$nombre,$apellidos);
     }else{
         $_SESSION["txt"]="El usuario o la contraseña no son correctos";
-        redireccionar("01SessionMostrarFormulario.php");
+        redireccionar("SessionMostrarFormulario.php");
     }
 
 

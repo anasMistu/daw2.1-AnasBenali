@@ -24,19 +24,13 @@ function obtenerPdoConexionBD(): PDO
     return $conexion;
 }
 
-function obtenerUsuario(string $identificador, string $contrasenna): ?array
+function obtenerUsuario(string $identificador): ?array
 {
     $pdo = obtenerPdoConexionBD();
-    $sql="SELECT * FROM Usuario WHERE identificador='$identificador' AND contrasenna='$contrasenna'";
+    $sql="SELECT * FROM Usuario WHERE identificador='$identificador'";
     $select= $pdo->prepare($sql);
     $select->execute([]);
     $resultados= $select->fetchAll();
-    /* No he consiguido que funcione de esta manera
-    $id=$resultados[0]['id'];
-    $nombre=$resultados[0]['nombre'];
-    $apellidos=$resultados[0]['apellidos'];
-    $identificadorr=$resultados[0]['identificador'];
-    */
     return $resultados;
 }
 
@@ -47,7 +41,7 @@ function marcarSesionComoIniciada(int $id, string $identificador, string $nombre
     $_SESSION["identificador"]=$identificador;
     $_SESSION["nombre"] =$nombre;
     $_SESSION["apellidos"]=$apellidos;
-    redireccionar("02ContenidoPrivado1.php");
+    redireccionar("ContenidoPrivado1.php");
 }
 
 function haySesionIniciada(): bool{
@@ -66,7 +60,7 @@ function cerrarSesion()
 
     session_destroy();
 
-    redireccionar("01SessionMostrarFormulario.php");
+    redireccionar("SessionMostrarFormulario.php");
 }
 
 // (Esta función no se utiliza en este proyecto pero se deja por si se optimizase el flujo de navegación.)
