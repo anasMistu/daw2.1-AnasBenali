@@ -1,18 +1,23 @@
 <?php
 require_once "_varios.php";
 
-// TODO ...$_REQUEST["..."]...
+if(isset($_POST["Crear"])){
 
-// TODO Intentar crear (añadir funciones en _Varios.php para crear y tal).
-//
-// TODO Y redirigir a donde sea.
+    if(empty($_POST["identificador"])|| empty($_POST["contrasenna"]) || empty($_POST["nombre"]) || empty($_POST["apellidos"])){
+        $_SESSION["txt"]="¡Asegurate de rellenar todos los campos!";
+        redireccionar("UsuarioNuevoFormulario.php");
+    }else{
+        $identificador=(string)$_POST["identificador"];
+        $contrasenna=(string)$_POST["contrasenna"];
+        $nombre=(string)$_POST["nombre"];
+        $apellidos=(string)$_POST["apellidos"];
+        crearUsuario($identificador,$nombre,$apellidos,$contrasenna);
+    }
+}
 
-/*$arrayUsuario = crearUsuario($identificador, $contrasenna, ....);
+
+
+
 
 // TODO ¿Excepciones?
 
-if ($arrayUsuario) {
-
-} else {
-
-}

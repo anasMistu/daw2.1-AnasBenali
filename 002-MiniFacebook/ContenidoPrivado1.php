@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "_varios.php";
 /*Si no hay session iniciada redirigimos a la pagina de Iniciar Session*/
 
@@ -22,7 +21,7 @@ require_once "_varios.php";
 <body>
 
 <h1>Contenido Privado 1</h1>
-<nav>Usuario: <?=$_SESSION["identificador"]?>  Nombre: <?=$_SESSION["nombre"]?>  Apellidos: <?=$_SESSION["apellidos"]?></nav>
+<nav>Usuario: <?=$_SESSION["identificador"]?>  Nombre: <?=$_SESSION["nombre"]?>  Apellidos: <?=$_SESSION["apellidos"]?> <a href='UsuarioPerfilVer.php?identificador=<?=$_SESSION["identificador"]?>'>Ver perfil</a></nav>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo tempor, fringilla enim non, malesuada elit. Aenean odio justo, pretium sed nunc nec, eleifend faucibus nibh. Nulla egestas ut sapien eu venenatis. Donec semper turpis eu magna aliquet, ut lobortis nunc commodo. Aliquam id felis orci. Donec hendrerit pretium malesuada. Ut ultricies mi nec ullamcorper tincidunt. Suspendisse nec efficitur nisi. Morbi consequat feugiat urna, et sodales sem sollicitudin vitae. Morbi nibh metus, aliquam ut mattis non, efficitur eget urna. Quisque sodales tempus varius.</p>
 <p>Aliquam iaculis, ex eu gravida vulputate, orci nibh elementum augue, sit amet lacinia purus quam non augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam sed mi at purus ornare molestie. Praesent cursus pharetra tortor. Aliquam sit amet interdum est. Pellentesque vehicula dapibus placerat. Cras eu lorem id lectus ultricies interdum ut non mauris. Suspendisse malesuada elit id magna varius, quis ullamcorper nibh hendrerit. Fusce elit enim, ornare non ante ac, rutrum pharetra nibh.</p>

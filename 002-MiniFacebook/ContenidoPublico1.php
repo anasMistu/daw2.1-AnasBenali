@@ -1,5 +1,4 @@
 <?php
-session_start();
     // Hecho: En esta página, si hay sesión iniciada, mostrar la info y si no poner un link para iniciar sesión,
     if(isset($_SESSION["id"])){
         $mostrarLink=false;

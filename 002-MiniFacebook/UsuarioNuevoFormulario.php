@@ -1,12 +1,3 @@
-<?php
-
-require_once "_varios.php";
-session_start();
-if(haySesionIniciada()){
-    redireccionar("ContenidoPrivado1.php");
-}
-
-?>
 
 <html>
 
@@ -19,6 +10,9 @@ if(haySesionIniciada()){
 <body>
 
 <h1>Crear Cuenta nueva</h1>
+<?php if(isset($_SESSION["txt"])){?>
+<p><?=$_SESSION["txt"]?></p>
+<?php }?>
 
 <div class="formulario">
     <form method="post" action="UsuarioNuevoCrear.php">

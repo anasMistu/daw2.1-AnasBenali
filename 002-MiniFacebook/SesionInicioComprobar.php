@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "_varios.php";
 $pdo=obtenerPdoConexionBD();
 /*Si no hay session iniciada redirigimos a la pagina de Iniciar Session*/
@@ -19,7 +18,7 @@ $pdo=obtenerPdoConexionBD();
         $apellidos=(string)$resultados[0]["apellidos"];
         marcarSesionComoIniciada($id,$identificador,$nombre,$apellidos);
     }else{
-        $_SESSION["txt"]="El usuario o la contraseña no son correctos";
+        $_SESSION["txto"]="El usuario o la contraseña no son correctos";
         redireccionar("SessionInicioFormulario.php");
     }
 

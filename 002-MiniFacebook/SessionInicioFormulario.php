@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "_varios.php";
 /*Si no hay session iniciada redirigimos a la pagina de CONTENIDO PRIADO 1*/
 if (haySesionIniciada()) {
@@ -22,9 +21,9 @@ if (haySesionIniciada()) {
 
 <h1>Iniciar Sesión</h1>
 <?php
-if(isset($_SESSION["txt"])){
+if(isset($_SESSION["txto"])){
 ?>
-<p><?= $_SESSION["txt"]?></p>
+<p><?= $_SESSION["txto"]?></p>
 <?php
 }
 ?>
