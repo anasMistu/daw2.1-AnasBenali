@@ -23,7 +23,7 @@ session_start();
 
 <h1>Contenido Público 1</h1>
 <?php if($mostrarLink==true){ ?>
-<nav><a href="SessionMostrarFormulario.php">Iniciar Session</a></nav>
+<nav><a href="SessionInicioFormulario.php">Iniciar Session</a></nav>
 <?php }else{?>
 <nav>Usuario: <?=$_SESSION["identificador"]?>  Nombre: <?=$_SESSION["nombre"]?>  Apellidos: <?=$_SESSION["apellidos"]?></nav>
 <?php };?>

@@ -4,7 +4,7 @@ require_once "_varios.php";
 /*Si no hay session iniciada redirigimos a la pagina de Iniciar Session*/
 
     if (haySesionIniciada()==false) {
-        redireccionar("SessionMostrarFormulario.php");
+        redireccionar("SessionInicioFormulario.php");
     }
 
 ?>

@@ -39,9 +39,9 @@ CREATE TABLE `Usuario` (
 --
 
 INSERT INTO `Usuario` (`id`, `identificador`, `contrasenna`, `codigoCookie`, `tipoUsuario`, `nombre`, `apellidos`) VALUES
-(1, 'jlopez', 'j', NULL, 0, 'José', 'López'),
-(2, 'mgarcia', 'm', NULL, 0, 'María', 'García'),
-(3, 'fpi', 'f', NULL, 0, 'Felipe', 'Pi');
+(1, 'jlopez', '$2y$10$AlnAMeg1n6OSAuMzaR7gtuySV/2MWNkdLFRv7PfN8AggdYBZTY0ei', NULL, 0, 'José', 'López'),
+(2, 'mgarcia', '$2y$10$.ECdUtViS3YqSOfVFLR3FeP14rfOgk3XCui45dZr0V/NsaBkZmm4i', NULL, 0, 'María', 'García'),
+(3, 'fpi', '$2y$10$pRkiuKRBlW3y5rhH27Hl0.QUp1eaCjJT56D18j8zKAg64.uiNVomm', NULL, 0, 'Felipe', 'Pi');
 
 --
 -- Índices para tablas volcadas

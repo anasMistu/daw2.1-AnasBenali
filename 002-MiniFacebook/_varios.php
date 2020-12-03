@@ -60,7 +60,7 @@ function cerrarSesion()
 
     session_destroy();
 
-    redireccionar("SessionMostrarFormulario.php");
+    redireccionar("SessionInicioFormulario.php");
 }
 
 // (Esta función no se utiliza en este proyecto pero se deja por si se optimizase el flujo de navegación.)

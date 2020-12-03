@@ -1,8 +1,10 @@
 <?php
-$contrseña=password_hash("f", PASSWORD_BCRYPT);
+$contrseña=password_hash("m", PASSWORD_BCRYPT);
 
-$tr=password_verify("m", $contrseña);
+$tr=password_verify("n", $contrseña);
 if($tr){
     print_r("hola");
-}
+}else{
     print_r($contrseña);
+
+}

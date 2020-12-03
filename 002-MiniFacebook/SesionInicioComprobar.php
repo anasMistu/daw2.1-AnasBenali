@@ -20,7 +20,7 @@ $pdo=obtenerPdoConexionBD();
         marcarSesionComoIniciada($id,$identificador,$nombre,$apellidos);
     }else{
         $_SESSION["txt"]="El usuario o la contraseña no son correctos";
-        redireccionar("SessionMostrarFormulario.php");
+        redireccionar("SessionInicioFormulario.php");
     }
 
 
