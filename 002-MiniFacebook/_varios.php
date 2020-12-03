@@ -34,9 +34,32 @@ function obtenerUsuario(string $identificador): ?array
     return $resultados;
 }
 
+/*------- Crear Usuario --------*/
+
+function crearUsuario(string $identificador, string $nombre, string $apellidos,string $contrasenna){
+    $codigoCookie="NULL";
+    $tipoUsuario=0;
+    $pdo=obtenerPdoConexionBD();
+    $verificarIdentificador=obtenerUsuario($identificador);
+    if(!empty($verificarIdentificador)){
+        $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
+        redireccionar("UsuarioNuevoFormulario.php");
+    }else{
+        $sqlSentencia="INSERT INTO Usuario (identificador,contrasenna,codigoCookie,nombre,apellidos) VALUES (?,?,?,?,?,?)";
+        $sqlInsert= $pdo->prepare($sqlSentencia);
+        $sqlInsert->execute([$identificador,password_hash($contrasenna,PASSWORD_BCRYPT),$codigoCookie,$tipoUsuario,$nombre,$apellidos]);
+        // TODO : ver si se ha insertado correctamnete
+        if(mysqli_affected_rows($pdo)==1){
+
+        }else{
+
+        }
+    }
+
+}
+
 function marcarSesionComoIniciada(int $id, string $identificador, string $nombre, string $apellidos)
 {
-    session_start();
     $_SESSION["id"]=$id;
     $_SESSION["identificador"]=$identificador;
     $_SESSION["nombre"] =$nombre;
