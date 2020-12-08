@@ -127,10 +127,10 @@ function haySesionIniciada(): bool{
 /*------ Funcion para Cerrar session (no tiene mas :)) -------*/
 function cerrarSesion()
 {
-    //session_start();
-
+    $cookieName=$_COOKIE["name"];
+    $cookieValue=$_COOKIE["value"];
+    setcookie($cookieName,$cookieValue,time()-86400);
     session_unset();
-
     session_destroy();
 
     redireccionar("SessionInicioFormulario.php");

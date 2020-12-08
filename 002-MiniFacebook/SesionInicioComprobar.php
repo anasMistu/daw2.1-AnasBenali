@@ -17,6 +17,9 @@ $pdo=obtenerPdoConexionBD();
         $nombre=(string)$resultados[0]["nombre"];
         $apellidos=(string)$resultados[0]["apellidos"];
         marcarSesionComoIniciada($id,$identificador,$nombre,$apellidos);
+       $cookieName=$identificador;
+       $cookieValue="$nombre $apellidos";
+       setcookie($cookieName,$cookieValue,time()+86400,"/");
     }else{
         $_SESSION["txto"]="El usuario o la contraseña no son correctos";
         redireccionar("SessionInicioFormulario.php");

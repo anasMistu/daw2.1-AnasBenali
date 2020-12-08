@@ -1,4 +1,8 @@
+<?php
 
+require_once "_varios.php";
+
+?>
 <html>
 
 <head>
