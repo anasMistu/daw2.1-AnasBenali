@@ -11,12 +11,13 @@ if(isset($_POST["Crear"])){
         $contrasenna=(string)$_POST["contrasenna"];
         $nombre=(string)$_POST["nombre"];
         $apellidos=(string)$_POST["apellidos"];
-        crearUsuario($identificador,$nombre,$apellidos,$contrasenna);
+        $foto= $_FILES["ftoDePerfil"]["name"];
+        $ruta= $_FILES["ftoDePerfil"]["tmp_name"];
+        crearUsuario($identificador,$nombre,$apellidos,$contrasenna,$foto,$ruta);
+
+
     }
 }
-
-
-
 
 
 // TODO ¿Excepciones?

@@ -36,7 +36,7 @@ function obtenerUsuario(string $identificador): ?array
 }
 
 /*------- Funcion para  Crear Usuario (insert a BDD) --------*/
-function crearUsuario(string $identificador, string $nombre, string $apellidos,string $contrasenna){
+function crearUsuario(string $identificador, string $nombre, string $apellidos,string $contrasenna,$foto,$ruta){
     $codigoCookie="NULL";
     $tipoUsuario=0;
     $pdo=obtenerPdoConexionBD();
@@ -45,9 +45,10 @@ function crearUsuario(string $identificador, string $nombre, string $apellidos,s
         $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
         redireccionar("UsuarioNuevoFormulario.php");
     }else{
-        $sqlSentencia="INSERT INTO Usuario (identificador,contrasenna,codigoCookie,tipoUsuario,nombre,apellidos) VALUES (?,?,?,?,?,?)";
+        $sqlSentencia="INSERT INTO Usuario (identificador,contrasenna,codigoCookie,tipoUsuario,fotoDePerfil,nombre,apellidos) VALUES (?,?,?,?,?,?,?)";
         $sqlInsert= $pdo->prepare($sqlSentencia);
-        $sqlInsert->execute([$identificador,password_hash($contrasenna,PASSWORD_BCRYPT),$codigoCookie,$tipoUsuario,$nombre,$apellidos]);
+        $sqlInsert->execute([$identificador,password_hash($contrasenna,PASSWORD_BCRYPT),$codigoCookie,$tipoUsuario,$foto,$nombre,$apellidos]);
+        guardarImg($identificador,$foto,$ruta);
         if($sqlInsert->rowCount()==1){
             $_SESSION["txt"]="¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
             redireccionar("UsuarioNuevoFormulario.php");
@@ -95,6 +96,23 @@ function marcarSesionComoIniciada(int $id, string $identificador, string $nombre
     $_SESSION["nombre"] =$nombre;
     $_SESSION["apellidos"]=$apellidos;
     redireccionar("ContenidoPrivado1.php");
+}
+
+function guardarImg($usuario,$foto,$ruta){
+    //foto: name del de la foto
+    // ruta: ruta temporal
+    // usuario: usuario de que vamos a modificar
+
+    $destino= "FotosDePerfil/".$foto;
+    copy($ruta, $destino);
+    $extension=pathinfo($foto,PATHINFO_EXTENSION);
+    $nombreNuevo="$usuario"."."."$extension";
+    rename("FotosDePerfil/$foto","FotosDePerfil/"."$nombreNuevo");
+    /*------- Insertar en la BDD ---------*/
+    $pdo=obtenerPdoConexionBD();
+    $sqlSentencia="UPDATE Usuario SET fotoDePerfil=? WHERE identificador=?";
+    $sqlUpdate=$pdo->prepare($sqlSentencia);
+    $sqlUpdate->execute([$nombreNuevo,$usuario]);
 }
 
 /*------ Funcion que devuelve true/false segun la el estado de las sessiones -------*/

@@ -30,6 +30,7 @@ CREATE TABLE `Usuario` (
                            `contrasenna` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
                            `codigoCookie` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
                            `tipoUsuario` int(11) NOT NULL,
+                           `fotoDePerfil` varchar(80) DEFAULT NULL ,
                            `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
                            `apellidos` varchar(50) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
