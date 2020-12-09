@@ -24,11 +24,21 @@ function obtenerPdoConexionBD(): PDO
     return $conexion;
 }
 
-/*------ Funcion para marcar la session iniciada -------*/
+/*------ Funcion para Obtener datos del usuario por identificador(USUARIO) -------*/
 function obtenerUsuario(string $identificador): ?array
 {
     $pdo = obtenerPdoConexionBD();
     $sql="SELECT * FROM Usuario WHERE identificador='$identificador'";
+    $select= $pdo->prepare($sql);
+    $select->execute([]);
+    $resultados= $select->fetchAll();
+    return $resultados;
+}
+/*------ Funcion para Obtener datos del usuario por identificador(USUARIO) -------*/
+function obtenerUsuarioId(string $id): ?array
+{
+    $pdo = obtenerPdoConexionBD();
+    $sql="SELECT * FROM Usuario WHERE id='$id'";
     $select= $pdo->prepare($sql);
     $select->execute([]);
     $resultados= $select->fetchAll();
@@ -41,6 +51,7 @@ function crearUsuario(string $identificador, string $nombre, string $apellidos,s
     $tipoUsuario=0;
     $pdo=obtenerPdoConexionBD();
     $verificarIdentificador=obtenerUsuario($identificador);
+
     if(!empty($verificarIdentificador)){
         $_SESSION["txt"]="¡ERROR! El usuario introducido ya existe.";
         redireccionar("UsuarioNuevoFormulario.php");
@@ -65,17 +76,11 @@ function actualizarDatos(array $datos){
     $identificador=$datos[0]["identificador"];
     $nombre=$datos[0]["nombre"];
     $apellidos=$datos[0]["apellidos"];
-    /*----- Verificar si el identificador no existe -----*/
-    $verificarIdentificador=obtenerUsuario($identificador);
-    //TODO: Solucionar el problema del identificador al cambiar
-    if(count($verificarIdentificador)!=0){
-        $_SESSION["msg"]="¡El usuario que has introducido ya existe!";
-        redireccionar("UsuarioPerfilVer.php?identificador=$identificador");
-    }else{
+
         $pdo=obtenerPdoConexionBD();
-        $sqlSentencia="UPDATE Usuario SET identificador=?,nombre=?,apellidos=? WHERE id=?";
+        $sqlSentencia="UPDATE Usuario SET nombre=?,apellidos=? WHERE id=? AND identificador=?";
         $sqlUpdate=$pdo->prepare($sqlSentencia);
-        $sqlUpdate->execute([$identificador,$nombre,$apellidos,$id]);
+        $sqlUpdate->execute([$nombre,$apellidos,$id,$identificador]);
         if($sqlUpdate->rowCount()==1){
             $_SESSION["msg"]="¡Los cambios se han guardado correctamente!";
             redireccionar("UsuarioPerfilVer.php?identificador=$identificador");
@@ -84,7 +89,6 @@ function actualizarDatos(array $datos){
             redireccionar("UsuarioPerfilVer.php?identificador=$identificador");
         }
 
-    }
 
 }
 
@@ -127,9 +131,6 @@ function haySesionIniciada(): bool{
 /*------ Funcion para Cerrar session (no tiene mas :)) -------*/
 function cerrarSesion()
 {
-    $cookieName=$_COOKIE["name"];
-    $cookieValue=$_COOKIE["value"];
-    setcookie($cookieName,$cookieValue,time()-86400);
     session_unset();
     session_destroy();
 

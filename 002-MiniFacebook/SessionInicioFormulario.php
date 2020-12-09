@@ -24,13 +24,15 @@ if (haySesionIniciada()) {
 if(isset($_SESSION["txto"])){
 ?>
 <p><?= $_SESSION["txto"]?></p>
+
 <?php
+    unset($_SESSION["txto"]);
 }
 ?>
 <div class="formulario">
     <form method="post" action="SesionInicioComprobar.php">
-        <input type="text" name="identificador" placeholder="Introduce tu usuario"><br><br>
-        <input type="password" name="contrasenna" placeholder="Introduce tu contraseña" ><br><br>
+        <input type="text" name="identificador" placeholder="Introduce tu usuario" required><br><br>
+        <input type="password" name="contrasenna" placeholder="Introduce tu contraseña" required><br><br>
         <input type="submit" name="Iniciar Session" value="Iniciar Session">
     </form>
 </div>

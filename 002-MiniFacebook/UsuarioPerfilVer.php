@@ -25,10 +25,12 @@ if(isset($_REQUEST["identificador"])){
 <h1>Perfil de <?=$resultados[0]["identificador"]?></h1>
 <?php if(isset($_SESSION["msg"])){?>
     <p><?=$_SESSION["msg"]?></p>
-<?php }?>
+<?php unset($_SESSION["msg"]);
+}?>
 <?php if(isset($_SESSION["notif"])){?>
     <p><?=$_SESSION["notif"]?></p>
-<?php }?>
+<?php unset($_SESSION["notif"]);
+}?>
 
 <div class="formulario">
     <form method="post" action="UsuarioPerfilGuardar.php">
@@ -38,11 +40,13 @@ if(isset($_REQUEST["identificador"])){
         <? }else{?>
         <img src="FotosDePerfil/<?=$resultados[0]["fotoDePerfil"]?>" width="280" height="280";><br><br>
         <?};?>
-        <label>Identificador: </label><input type="text" name="identificador" value="<?=$resultados[0]["identificador"]?>"><br><br>
+        <label>Identificador: </label><input type="text" name="identificador" value="<?=$resultados[0]["identificador"]?>" readonly><br><br>
         <label>Nombre: </label><input type="text" name="nombre" value="<?=$resultados[0]["nombre"]?>"><br><br>
         <label>Apellidos: </label><input type="text" name="apellidos" value="<?=$resultados[0]["apellidos"]?>"><br><br>
         <input type="submit" name="guardar" value="Guardar Cambios">
     </form>
+    <a href='UsuarioCambiarContra.php?idContrasenna=<?=$resultados[0]["id"]?>'>Cambiar la contraseña</a>
+
 </div>
 
 </body>

@@ -39,6 +39,8 @@ CREATE TABLE `Usuario` (
 -- Volcado de datos para la tabla `Usuario`
 --
 
+# noinspection SqlNoDataSourceInspection
+
 INSERT INTO `Usuario` (`id`, `identificador`, `contrasenna`, `codigoCookie`, `tipoUsuario`, `nombre`, `apellidos`) VALUES
 (1, 'jlopez', '$2y$10$AlnAMeg1n6OSAuMzaR7gtuySV/2MWNkdLFRv7PfN8AggdYBZTY0ei', NULL, 0, 'José', 'López'),
 (2, 'mgarcia', '$2y$10$.ECdUtViS3YqSOfVFLR3FeP14rfOgk3XCui45dZr0V/NsaBkZmm4i', NULL, 0, 'María', 'García'),
