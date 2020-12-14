@@ -131,12 +131,81 @@ function haySesionIniciada(): bool{
 /*------ Funcion para Cerrar session (no tiene mas :)) -------*/
 function cerrarSesion()
 {
+    $arrayUsuario=obtenerUsuarioId((string)$_SESSION["id"]);
+    borrarCookieRecordar($arrayUsuario);
     session_unset();
     session_destroy();
-
     redireccionar("SessionInicioFormulario.php");
 }
 
+/*--------- funcion para generar cadenas aleatorias -----------*/
+function generarCookieRecordar(array $arrayUsuario)
+{
+    // Creamos un código cookie muy complejo (no necesariamente único).
+    $codigoCookie = generarCadenaAleatoria(32); // Random...
+    $id= $arrayUsuario[0]["id"];
+    // actualizar el codigoCookie en la BDD
+    anotarCookieEnBDD($codigoCookie,$id);
+
+    // TODO Para una seguridad óptima convendría anotar en la BD la fecha de caducidad de la cookie y no aceptar ninguna cookie pasada dicha fecha.
+
+
+    // anotar la cookie en el navegador
+    $valorIdentificador=$arrayUsuario[0]["identificador"];
+    $valorClave=$codigoCookie;
+    setcookie("identificador",$valorIdentificador,time()+86400);
+    setcookie("clave",$valorClave,time()+86400);
+
+}
+
+/*--------- funcion actualizar el codigo cookie en la BDD -----------*/
+function anotarCookieEnBDD( $codigoCookie, $idUsuario): bool {
+    $pdo=obtenerPdoConexionBD();
+    if($codigoCookie=="NULL"){
+        $codigoCookie=NULL;
+    }
+    $sqlSentencia="UPDATE Usuario SET codigoCookie=? WHERE id=?";
+
+    $sqlUpdate=$pdo->prepare($sqlSentencia);
+    $sqlUpdate->execute([$codigoCookie,$idUsuario]);
+    if($sqlUpdate->rowCount()==1){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+/*--------- funcion que comprueba si el codigo cookie y el value estan en la BDD -----------*/
+function iniciarSessionConCookie(): bool
+{
+    // TODO Comprobar si hay una "sesión-cookie" válida:
+    //   - Ver que vengan DOS cookies "identificador" y "codigoCookie".
+    //   - BD: SELECT ... WHERE identificador=? AND BINARY codigoCookie=?
+    //   - ¿Ha venido un registro? (Igual que el inicio de sesión)
+    //     · Entonces, se la canjeamos por una SESIÓN RAM INICIADA: marcarSesionComoIniciada($arrayUsuario)
+    //     · Además, RENOVAMOS (re-creamos) la cookie.
+    //   - IMPORTANTE: si las cookies NO eran válidas, tenemos que borrárselas.
+    //   - En cualquier caso, devolver true/false.
+}
+
+/*--------- funcion para borrar la cookie del navegador y la bdd -----------*/
+function borrarCookieRecordar(array $arrayUsuario)
+{
+    // TODO Eliminar el código cookie de nuestra BD.
+    $id= $arrayUsuario[0]["id"];
+    anotarCookieEnBDD("NULL",$id);
+    // TODO Pedir borrar cookie (setcookie con tiempo time() - negativo...)
+    setcookie("identificador","",time()-86400);
+    setcookie("clave","",time()-86400);
+}
+
+/*--------- funcion para generar cadenas aleatorias -----------*/
+function generarCadenaAleatoria(int $longitud): string
+{
+    for ($s = '', $i = 0, $z = strlen($a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')-1; $i != $longitud; $x = rand(0,$z), $s .= $a[$x], $i++);
+    return $s;
+}
 
 function redireccionar(string $url)
 {

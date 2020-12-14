@@ -33,6 +33,7 @@ if(isset($_SESSION["txto"])){
     <form method="post" action="SesionInicioComprobar.php">
         <input type="text" name="identificador" placeholder="Introduce tu usuario" required><br><br>
         <input type="password" name="contrasenna" placeholder="Introduce tu contraseña" required><br><br>
+        Recuerdame: <input type='checkbox' name='recordar' id='recordar'><br><br>
         <input type="submit" name="Iniciar Session" value="Iniciar Session">
     </form>
 </div>
