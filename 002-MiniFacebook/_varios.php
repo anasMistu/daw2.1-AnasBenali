@@ -93,12 +93,12 @@ function actualizarDatos(array $datos){
 }
 
 /*------ Funcion para marcar la session iniciada -------*/
-function marcarSesionComoIniciada(int $id, string $identificador, string $nombre, string $apellidos)
+function marcarSesionComoIniciada($arrayUsuario)
 {
-    $_SESSION["id"]=$id;
-    $_SESSION["identificador"]=$identificador;
-    $_SESSION["nombre"] =$nombre;
-    $_SESSION["apellidos"]=$apellidos;
+    $_SESSION["id"]=$arrayUsuario[0]["id"];
+    $_SESSION["identificador"]=$arrayUsuario[0]["identificador"];
+    $_SESSION["nombre"] =$arrayUsuario[0]["nombre"];
+    $_SESSION["apellidos"]=$arrayUsuario[0]["apellidos"];
     redireccionar("ContenidoPrivado1.php");
 }
 
@@ -138,7 +138,7 @@ function cerrarSesion()
     redireccionar("SessionInicioFormulario.php");
 }
 
-/*--------- funcion para generar cadenas aleatorias -----------*/
+/*--------- funcion para generar la cookie y anotarla en la BDD -----------*/
 function generarCookieRecordar(array $arrayUsuario)
 {
     // Creamos un código cookie muy complejo (no necesariamente único).
@@ -146,10 +146,7 @@ function generarCookieRecordar(array $arrayUsuario)
     $id= $arrayUsuario[0]["id"];
     // actualizar el codigoCookie en la BDD
     anotarCookieEnBDD($codigoCookie,$id);
-
     // TODO Para una seguridad óptima convendría anotar en la BD la fecha de caducidad de la cookie y no aceptar ninguna cookie pasada dicha fecha.
-
-
     // anotar la cookie en el navegador
     $valorIdentificador=$arrayUsuario[0]["identificador"];
     $valorClave=$codigoCookie;
@@ -179,14 +176,23 @@ function anotarCookieEnBDD( $codigoCookie, $idUsuario): bool {
 /*--------- funcion que comprueba si el codigo cookie y el value estan en la BDD -----------*/
 function iniciarSessionConCookie(): bool
 {
-    // TODO Comprobar si hay una "sesión-cookie" válida:
-    //   - Ver que vengan DOS cookies "identificador" y "codigoCookie".
-    //   - BD: SELECT ... WHERE identificador=? AND BINARY codigoCookie=?
-    //   - ¿Ha venido un registro? (Igual que el inicio de sesión)
-    //     · Entonces, se la canjeamos por una SESIÓN RAM INICIADA: marcarSesionComoIniciada($arrayUsuario)
-    //     · Además, RENOVAMOS (re-creamos) la cookie.
-    //   - IMPORTANTE: si las cookies NO eran válidas, tenemos que borrárselas.
-    //   - En cualquier caso, devolver true/false.
+        if(isset($_COOKIE["identificador"]) && isset($_COOKIE["clave"])){
+            $identificador=$_COOKIE["identificador"];
+            $codigoCookie=$_COOKIE["clave"];
+            $arrayUsuario=obtenerUsuario($identificador);//Obtener usuario con el identificador de la cookie
+            // Si hay un usuario con el identificador de la cookie
+            // Y ademas coincide el codigoCookie de la BDD y el codigoCookie de la cookie
+            if( $arrayUsuario && $arrayUsuario[0]["codigoCookie"]==$codigoCookie ){
+                generarCookieRecordar($arrayUsuario);// Generamos otro codigo y renovamos la cookie
+                return true;
+            }else{
+                borrarCookieRecordar($arrayUsuario);// Borranos la cookie
+                return false;
+            }
+        }else{
+            return false;
+        }
+
 }
 
 /*--------- funcion para borrar la cookie del navegador y la bdd -----------*/

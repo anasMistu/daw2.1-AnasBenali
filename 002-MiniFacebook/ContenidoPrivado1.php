@@ -1,11 +1,17 @@
 <?php
 require_once "_varios.php";
 /*Si no hay session iniciada redirigimos a la pagina de Iniciar Session*/
+if(iniciarSessionConCookie() && !haySesionIniciada()){
+    $identificador=$_COOKIE["identificador"];
+    $codigoCookie=$_COOKIE["clave"];
+    $arrayUsuario=obtenerUsuario($identificador);
+    generarCookieRecordar($arrayUsuario); // Generar otro codigo cookie nuevo
+    marcarSesionComoIniciada($arrayUsuario); // Canjear la session
+}
 
-    if (haySesionIniciada()==false) {
-        redireccionar("SessionInicioFormulario.php");
-    }
-
+if (!haySesionIniciada() ) {
+    redireccionar("SessionInicioFormulario.php");
+}
 ?>
 
 

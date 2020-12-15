@@ -1,9 +1,15 @@
 <?php
 require_once "_varios.php";
 /*Si no hay session iniciada redirigimos a la pagina de CONTENIDO PRIADO 1*/
-if (haySesionIniciada()) {
-    redireccionar("ContenidoPrivado1.php");
+
+if(iniciarSessionConCookie()){
+        $identificador=$_COOKIE["identificador"];
+        $codigoCookie=$_COOKIE["clave"];
+        $arrayUsuario=obtenerUsuario($identificador);
+        generarCookieRecordar($arrayUsuario); // Generar otro codigo cookie nuevo
+        marcarSesionComoIniciada($arrayUsuario); // Canjear la session
 }
+
 ?>
 
 
