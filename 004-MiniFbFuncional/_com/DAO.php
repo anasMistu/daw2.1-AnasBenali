@@ -46,6 +46,8 @@ class DAO
         // Creamos un código cookie muy complejo (no necesariamente único).
         $codigoCookie = generarCadenaAleatoria(32); // Random...
         $idUsuario = $usuario->getId();
+        $caducidadCodigoCookie=date("Y/m/d H:i:s");
+
         // actualizar el codigoCookie en la BDD
         DAO::anotarCookieEnBDD($codigoCookie, $idUsuario);
         // anotar la cookie en el navegador
@@ -53,6 +55,23 @@ class DAO
         $valorCookie = $codigoCookie;
         setcookie("identificador", $identificador, time() + 86400);
         setcookie("clave", $valorCookie, time() + 86400);
+    }
+    public static function anotarCookieEnBDD($codigoCookie, $idUsuario,$caducidadCodigoCookie): bool
+    {
+        $pdo = DAO::obtenerPdoConexionBD();
+        if ($codigoCookie == "NULL") {
+            $codigoCookie = NULL;
+            $caducidadCodigoCookie=NULL;
+        }
+        $sqlSentencia = "UPDATE Usuario SET codigoCookie=?,caducidadCodigoCookie=? WHERE id=?";
+
+        $sqlUpdate = $pdo->prepare($sqlSentencia);
+        $sqlUpdate->execute([$codigoCookie,$caducidadCodigoCookie, $idUsuario]);
+        if ($sqlUpdate->rowCount() == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
     public static function marcarSesionComoIniciada(Usuario $usuario)
     {
@@ -82,7 +101,7 @@ class DAO
 
     /*  FUNCIONES PARA USUARIO   */
 
-    public function crearUsuarioDesdeRs(array $arrayInfo): Usuario
+    public static function crearUsuarioDesdeRs(array $arrayInfo): Usuario
     {
         $id=$arrayInfo[0]["id"];
         $identificador=$arrayInfo[0]["identificador"];
@@ -94,6 +113,53 @@ class DAO
         $apellidos=$arrayInfo[0]["apellidos"];
         return new Usuario($id,$identificador,$contrasenna,$codigoCookie,$caducidadCodigoCookie,$tipoUsuario,$nombre,$apellidos);
     }
+    public static function obtenerUsuarioConIdentificador(string $identificador): ?array
+    {
+        $pdo = DAO::obtenerPdoConexionBD();
+        $sql = "SELECT * FROM Usuario WHERE identificador='$identificador' ";
+        $select = $pdo->prepare($sql);
+        $select->execute([]);
+        $resultados = $select->fetchAll();
+
+        return $resultados;
+    }
+
+    public static function crearUsuario(Usuario $usuario)
+    {
+        $pdo = DAO::obtenerPdoConexionBD();
+        /*CRAGAR LOS DATOS DEL OBJETO*/
+        $codigoCookie = (string)NULL;
+        $caducidadCodigoCookie=(string)NULL;
+        $nombre = (string)$usuario->getNombre();
+        $apellidos = (string)$usuario->getApellidos();
+        $identificador = (string)$usuario->getIdentificador();
+        $tipoUsuario = $usuario->getTipoUsuario();
+        $contrasenna = (string)$usuario->getContrasenna();
+        $verificarIdCliente = DAO::obtenerUsuarioConIdentificador($identificador);
+        if (!empty($verificarIdCliente)) {
+            $_SESSION["txt"] = "¡ERROR! El usuario introducido ya existen.";
+            redireccionar("UsuarioNuevoFormulario.php");
+        } else {
+            $sqlSentencia = "INSERT INTO Usuario 
+            (identificador,contrasenna,codigoCookie,caducidadCookie,tipoUsuario,nombre,apellidos )
+            VALUES (?,?,?,?,?,?,?)";
+            $sqlInsert = $pdo->prepare($sqlSentencia);
+            $sqlInsert->execute([
+                $identificador,password_hash($contrasenna, PASSWORD_BCRYPT),
+                $codigoCookie,$caducidadCodigoCookie,$tipoUsuario , $nombre, $apellidos
+            ]);
+            if ($sqlInsert->rowCount() == 1) {
+                $_SESSION["txt"] = "¡La cuenta se ha creado correctamente! Ya pudes iniciar session.";
+                redireccionar("UsuarioNuevoFormulario.php");
+            } else {
+                $_SESSION["txt"] = "¡ERROR! No se ha podido crear la cuenta, intentalo otra vez.";
+                redireccionar("UsuarioNuevoFormulario.php");
+            }
+        }
+    } //FIN FUNCION DE CREAR NUEVO USUARIO
+
+
+
 
     /*  FUNCIONES PARA PUBLICACION   */
     public function crearPublicacionDesdeRs(array $arrayInfo): Publicacion
