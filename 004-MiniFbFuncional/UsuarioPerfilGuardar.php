@@ -1,17 +1,43 @@
 <?php
+require_once "_com/DAO.php";
 
-// TODO ...$_REQUEST["..."]...
 
-// TODO Intentar guardar (añadir funciones en Varios.php para crear y tal).
 
-// TODO Y redirigir a donde sea.
+if (!DAO::haySesionRamIniciada() && !DAO::intentarCanjearSesionCookie()) {
+    redireccionar("SesionInicioFormulario.php");
+}
 
-$correcto = actualizarUsuarioEnBD($arrayUsuario);
+$identificador=$_POST["identificador"];
+$nombre=$_POST["nombre"];
+$apellidos=$_POST["apellidos"];
+$id=$_POST["id"];
 
-// TODO ¿Excepciones?
+$usuarioActual=DAO::crearUsuarioDesdeRs(DAO::obtenerUsuarioConIdentificador($_SESSION["identificador"]));
+if($identificador==$usuarioActual->getIdentificador()){
 
-if ($correcto) {
+    $sql="UPDATE Usuario SET nombre=?, apellidos=? WHERE id=?";
+    if(DAO::ejecutarConsultaActualizar($sql,[$nombre,$apellidos,$id])){
+        $usuarioNuevo=DAO::crearUsuarioDesdeRs(DAO::obtenerUsuarioConIdentificador($identificador));
+        DAO::establecerSesionRam($usuarioNuevo);
+        redireccionar("UsuarioPerfilVer.php?identificador=".$identificador);
+    }else{
+        redireccionar("UsuarioPerfilVer.php?error&identificador=".$identificador);
+    }
+}else{
+    if (DAO::verificarUsuario($identificador)!=1){
+        $sql="UPDATE Usuario SET identificador=?, nombre=?, apellidos=? WHERE id=?";
+        if(DAO::ejecutarConsultaActualizar($sql,[$identificador,$nombre,$apellidos,$id])){
+            $usuarioNuevo=DAO::crearUsuarioDesdeRs(DAO::obtenerUsuarioConIdentificador($identificador));
+            DAO::establecerSesionRam($usuarioNuevo);
+            redireccionar("UsuarioPerfilVer.php?identificador=".$identificador);
+        }else{
+            redireccionar("UsuarioPerfilVer.php?error&identificador=".$identificador);
+        }
+    }else{
+        redireccionar("UsuarioPerfilVer.php?errorId&identificador=".$identificador);
+    }
 
-} else {
 
 }
+
+//print_r(DAO::verificarUsuario($_POST["identificador"]));

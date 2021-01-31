@@ -1,7 +1,10 @@
 <?php
 
 declare(strict_types=1);
-
+ini_set('display_errors', "1");
+ini_set('display_startup_errors', "1");
+error_reporting(E_ALL);
+session_start();
 // (Esta función no se utiliza en este proyecto pero se deja por si se optimizase el flujo de navegación.)
 // Esta función redirige a otra página y deja de ejecutar el PHP que la llamó:
 function redireccionar(string $url)

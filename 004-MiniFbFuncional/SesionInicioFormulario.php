@@ -1,7 +1,7 @@
 <?php
-    require_once "_Varios.php";
+    require_once "_com/DAO.php";
 
-    if (haySesionRamIniciada()) redireccionar("MuroVerGlobal.php");
+    if(DAO::haySesionRamIniciada()) redireccionar("MuroVerGlobal.php");
 
     $datosErroneos = isset($_REQUEST["datosErroneos"]);
 ?>
@@ -34,10 +34,10 @@
     <label for='recordar'>Recuérdame aunque cierre el navegador</label>
     <input type='checkbox' name='recordar' id='recordar'><br><br>
 
-    <input type='submit' value='Iniciar Sesión'>
+    <input type='submit' name=iniciar" value='Iniciar Sesión'>
 </form>
 
-<p>O, si no tienes una cuenta aún, <a href='UsuarioNuevoCrear.php'>créala aquí</a>.</p>
+<p>O, si no tienes una cuenta aún, <a href='UsuarioNuevoFormulario.php'>créala aquí</a>.</p>
 
 </body>
 

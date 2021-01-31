@@ -1,17 +1,21 @@
 <?php
 
-require_once "_Varios.php";
+require_once "_com/DAO.php";
 
-$arrayUsuario = obtenerUsuarioPorContrasenna($_REQUEST["identificador"], $_REQUEST["contrasenna"]);
+
+$arrayUsuario = DAO::obtenerUsuarioConIdentificador($_POST["identificador"]);
+$usuario=DAO::crearUsuarioDesdeRs($arrayUsuario);
 
 if ($arrayUsuario) { // Identificador existía y contraseña era correcta.
-    establecerSesionRam($arrayUsuario);
+    DAO::establecerSesionRam($usuario);
 
-    if (isset($_REQUEST["recordar"])) {
-        establecerSesionCookie($arrayUsuario);
+    if (isset($_POST["recordar"])) {
+       DAO::generarCookieRecordar($usuario);
+        //print_r("BIEN");
     }
 
     redireccionar("MuroVerGlobal.php");
 } else {
     redireccionar("SesionInicioFormulario.php?datosErroneos");
+
 }

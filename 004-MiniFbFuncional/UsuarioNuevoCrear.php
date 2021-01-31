@@ -1,17 +1,34 @@
 <?php
+ini_set('display_errors', "1");
+ini_set('display_startup_errors', "1");
+error_reporting(E_ALL);
+require_once "_com/DAO.php";
 
-// TODO ...$_REQUEST["..."]...
+if(isset($_POST["crear"])){
 
-// TODO Intentar crear (añadir funciones en Varios.php para crear y tal).
-//
-// TODO Y redirigir a donde sea.
+        //$emailCliente=(string)$_POST["emailCliente"];
+        $identificador=(string)$_POST["identificador"];
+        $contrasenna=(string)$_POST["contrasenna"];
+        $nombre=(string)$_POST["nombre"];
+        $apellidos=(string)$_POST["apellidos"];
+        if(strtolower($identificador)=="admin"){
+            $tipoUsuario=1;
+        }else{
+            $tipoUsuario=0;
+        }
 
-$arrayUsuario = crearUsuario($identificador, $contrasenna, ....);
+    /* CARGAR EL ARRAY CON DATOS*/
+    $informacionUsuario= array(
+        "identificador"=>$identificador,
+        "contrasenna"=>$contrasenna,
+        "tipoUsuario"=>$tipoUsuario,
+        "nombre"=>$nombre,
+        "apellidos"=>$apellidos
+    );
 
-// TODO ¿Excepciones?
+    DAO::crearUsuario($informacionUsuario);
 
-if ($arrayUsuario) {
-
-} else {
 
 }
+
+
