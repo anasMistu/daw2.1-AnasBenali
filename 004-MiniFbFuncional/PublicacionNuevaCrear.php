@@ -25,3 +25,4 @@ if(!isset($_POST["destinatarioId"])){
     DAO::publicacionCrear([$fecha,$destinatarioId,$emisorId,$destacadHasta,$asunto,$contenido]);
     redireccionar("MuroVerDe.php?identificador=".$identificadoDestino);
 }
+print_r(56,$_SESSION["id"]);

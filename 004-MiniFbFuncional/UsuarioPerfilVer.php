@@ -17,7 +17,7 @@ if (!DAO::haySesionRamIniciada() && !DAO::intentarCanjearSesionCookie()) {
     if(isset($_REQUEST["errorId"])){
         $notificacion="El identificador introducido ya existe.";
     }
-    print_r($_SESSION["id"]);
+    print_r($_SESSION["identificador"]);
 ?>
 <html>
 
