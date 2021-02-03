@@ -6,6 +6,10 @@
     if (!DAO::haySesionRamIniciada() && !DAO::intentarCanjearSesionCookie()) {
         redireccionar("SesionInicioFormulario.php");
     }
+    /*SI no ha venido la variable*/
+    if(!isset($_REQUEST["identificador"])){
+        redireccionar("MuroVerGlobal.php");
+    }
 
     $identificador=$_REQUEST["identificador"];
     $usuarioDestino=DAO::crearUsuarioDesdeRs(DAO::obtenerUsuarioConIdentificador($identificador));
