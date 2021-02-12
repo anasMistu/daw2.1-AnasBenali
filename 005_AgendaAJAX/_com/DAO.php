@@ -83,7 +83,8 @@ class DAO
 
     public static function categoriaEliminar($id){
         $sql = "DELETE FROM Categoria WHERE id=?";
-        self::ejecutarConsulta($sql,[$id]);
+        return self::ejecutarConsulta($sql,[$id]);
+
     }
 
     public static function categoriaCrear(string $nombre): Categoria

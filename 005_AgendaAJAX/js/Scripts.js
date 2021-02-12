@@ -7,8 +7,8 @@ var tablaCategorias;
 function inicializaciones() {
     tablaCategorias = document.getElementById("tablaCategorias");
     document.getElementById('submitCrearCategoria').addEventListener('click', clickCrearCategoria)
-
     cargarTodasLasCategorias();
+
 }
 //document.getElementById("submitCrearCategoria").addEventListener("click",clickCrearCategoria)
 function cargarTodasLasCategorias() {
@@ -36,15 +36,12 @@ function clickCrearCategoria() {
     request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var categorias = JSON.parse(this.responseText);
-
-            for (var i=0; i<categorias.length; i++) {
-                insertarCategoria(categorias[i]);
-            }
+            insertarCategoria(categorias);
         }
     };
-
     request.open("GET", "CategoriaCrear.php?nombre="+nombreCategoria,true);
     request.send();
+    document.getElementById("nombre").value="";
 
 }
 
@@ -53,34 +50,88 @@ function insertarCategoria(categoria) {
     // Usar esto: https://www.w3schools.com/jsref/met_node_insertbefore.asp
 
     var tr = document.createElement("tr");
-    var td = document.createElement("td");
-    var a = document.createElement("a");
-    var aEliminar = document.createElement("a");
-    var trEliminar = document.createElement("tr");
-   // var tdEliminar=document.createElement("td");
-    a.setAttribute("href","CategoriaFicha.php?id=" + categoria.id);
-    aEliminar.setAttribute("href","CategoriaEliminar.php?id=" + categoria.id);
 
-    var textoContenido = document.createTextNode(categoria.nombre);
+    var tdNombre = document.createElement("td");
+    var inputNombre = document.createElement("input");
+
+    var tdEliminar = document.createElement("td");
+    var btnEliminar = document.createElement("button");
+
+    inputNombre.setAttribute("type","text");
+    btnEliminar.setAttribute("id","catEliminar"+categoria.id);
+    inputNombre.setAttribute("id","CatModificar"+categoria.id);
+
+   // btnEliminar.addEventListener("click",eliminarCategoria)
+    //var textoContenido = document.createTextNode(categoria.nombre);
     var textoContenidoEliminar = document.createTextNode("(X)");
 
-    a.appendChild(textoContenido);
-    td.appendChild(a);
-    tr.appendChild(td);
-    //aEliminar.appendChild(textoContenidoEliminar);
-   // td.appendChild(aEliminar);
-    //trEliminar.appendChild(td);
+    /*Insertar el enlace*/
+    inputNombre.value=categoria.nombre;//poner texto para el enlace
+    inputNombre.readOnly=true;
+    tdNombre.appendChild(inputNombre);//insertarlo en el td
+    tdNombre.addEventListener("dblclick",cabiarInput)
+    tdNombre.addEventListener("focusout",modificarCategoria);
+
+    tr.appendChild(tdNombre);//inserttar el td en el tr
+    btnEliminar.addEventListener("click", eliminarCategoria);
+    /*Insertar el btnEliminar*/
+    btnEliminar.appendChild(textoContenidoEliminar);
+    tdEliminar.appendChild(btnEliminar);
+    tr.appendChild(tdEliminar);
+
     tablaCategorias.appendChild(tr)
-   // tablaCategorias.appendChild(trEliminar);
+
 
 }
 
-function eliminarCategoria(id) {
-    // TODO Pendiente de hacer.
+function eliminarCategoria(e) {
+   var idCategoria=e.target.id.substring(11,e.target.id.length+1);// extraer el id de la categoria
+   //alert(idCategoria);
+    var request = new XMLHttpRequest();
+    //alert(idCategoria);
+    request.onreadystatechange = function() {
+       // alert(idCategoria);
+        if (this.readyState == 4 && this.status == 200) {
+            var resultado = this.responseText;
+            if(resultado==1){
+                alert("Se ha borrado correctamente");
+            }else{
+                alert("Ha occurido algun error");
+            }
+            document.getElementById(e.target.id).parentElement.parentElement.remove();
+        }
+    };
+
+    request.open("GET", "CategoriaEliminar.php?id="+idCategoria,true);
+    request.send();
 }
 
-function modificarCategoria(categoria) {
-    // TODO Pendiente de hacer.
+function cabiarInput(e){
+   // var idCategoria=e.target.id.substring(12,e.target.id.length+1);// extraer el id de la categoria
+    document.getElementById(e.target.id).readOnly=false;
+    //alert(idCategoria);
+}
+
+function modificarCategoria(e) {
+    var idCategoria=e.target.id.substring(12,e.target.id.length+1);// extraer el id de la categoria
+    var input=document.getElementById(e.target.id);
+    var nombre=input.value;
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            if(this.responseText==1){
+                alert("SE ha guardado");
+            }else{
+                alert("NOOOOOOOOOOOOOOOOOOO");
+            }
+            input.value=nombre;
+        }
+    };
+    var url="CategoriaGuardar.php?id="+idCategoria+"&nombre="+nombre;
+    alert(url);
+    request.open("GET", url,true);
+    request.send();
+
 }
 
 // TODO Actualizar lo local si actualizan el servidor. Poner timestamp de modificación en la tabla y pedir categoriaObtenerModificadasDesde(timestamp)
