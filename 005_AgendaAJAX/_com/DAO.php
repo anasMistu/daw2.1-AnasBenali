@@ -75,12 +75,16 @@ class DAO
 
     public static function categoriaActualizar($id, $nombre)
     {
-        self::ejecutarActualizacion(
-            "UPDATE Categoria SET nombre=? WHERE id=?",
-            [$nombre, $id]
-        );
+        $sql="UPDATE Categoria SET nombre=? WHERE id=?";
+        return self::ejecutarConsultaActualizar($sql,[$nombre,$id]);
     }
+    public static function eliminarCategoriaPorId(int $id): bool
+    {
 
+        $sql = "DELETE FROM Categoria WHERE id=?";
+
+        return self::ejecutarConsultaActualizar($sql, [$id]);
+    }
     public static function categoriaEliminar($id){
         $sql = "DELETE FROM Categoria WHERE id=?";
         return self::ejecutarConsulta($sql,[$id]);
@@ -96,7 +100,14 @@ class DAO
 
         return self::categoriaObtenerPorId($idAutogenerado);
     }
+    public static function ejecutarConsultaActualizar(string $sql, array $parametros): int
+    {
+        if (!isset(DAO::$pdo)) DAO::$pdo = DAO::obtenerPdoConexionBd();
 
+        $sentencia = DAO::$pdo->prepare($sql);
+        $sentencia->execute($parametros);
+        return $sentencia->rowCount();
+    }
     public static function categoriaObtenerTodas(): array
     {
         $datos = [];

@@ -46,11 +46,8 @@ function clickCrearCategoria() {
 }
 
 function insertarCategoria(categoria) {
-    // TODO Que la categoría se inserte en el lugar que le corresponda según un orden alfabético.
-    // Usar esto: https://www.w3schools.com/jsref/met_node_insertbefore.asp
-
     var tr = document.createElement("tr");
-
+    tr.setAttribute("id", "catDom"+categoria.id);//Darle un id al tr
     var tdNombre = document.createElement("td");
     var inputNombre = document.createElement("input");
 
@@ -61,8 +58,6 @@ function insertarCategoria(categoria) {
     btnEliminar.setAttribute("id","catEliminar"+categoria.id);
     inputNombre.setAttribute("id","CatModificar"+categoria.id);
 
-   // btnEliminar.addEventListener("click",eliminarCategoria)
-    //var textoContenido = document.createTextNode(categoria.nombre);
     var textoContenidoEliminar = document.createTextNode("(X)");
 
     /*Insertar el enlace*/
@@ -74,7 +69,6 @@ function insertarCategoria(categoria) {
 
     tr.appendChild(tdNombre);//inserttar el td en el tr
     btnEliminar.addEventListener("click", eliminarCategoria);
-    /*Insertar el btnEliminar*/
     btnEliminar.appendChild(textoContenidoEliminar);
     tdEliminar.appendChild(btnEliminar);
     tr.appendChild(tdEliminar);
@@ -88,17 +82,16 @@ function eliminarCategoria(e) {
    var idCategoria=e.target.id.substring(11,e.target.id.length+1);// extraer el id de la categoria
    //alert(idCategoria);
     var request = new XMLHttpRequest();
-    //alert(idCategoria);
     request.onreadystatechange = function() {
-       // alert(idCategoria);
+
         if (this.readyState == 4 && this.status == 200) {
-            var resultado = this.responseText;
-            if(resultado==1){
+            //alert(this.responseText);
+            if(this.responseText==1){
                 alert("Se ha borrado correctamente");
             }else{
                 alert("Ha occurido algun error");
             }
-            document.getElementById(e.target.id).parentElement.parentElement.remove();
+            document.getElementById("catDom"+idCategoria).remove();
         }
     };
 
@@ -128,7 +121,7 @@ function modificarCategoria(e) {
         }
     };
     var url="CategoriaGuardar.php?id="+idCategoria+"&nombre="+nombre;
-    alert(url);
+   // alert(url);
     request.open("GET", url,true);
     request.send();
 
