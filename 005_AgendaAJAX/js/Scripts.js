@@ -9,6 +9,7 @@ function inicializaciones() {
     document.getElementById('submitCrearCategoria').addEventListener('click', clickCrearCategoria)
     cargarTodasLasCategorias();
 
+
 }
 //document.getElementById("submitCrearCategoria").addEventListener("click",clickCrearCategoria)
 function cargarTodasLasCategorias() {
